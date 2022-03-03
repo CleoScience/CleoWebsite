@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Mandelbrot</title>
+    
+<html>
+    <head>
+        <link rel="icon" href="Media/icon.png">
+    </head>
+
+    <body>
+
+        <h1>
+            Mandelbrot
+        </h1>
+        <p id="stats" >
+        </p>
+        <button type="button" id="drawMandelbrotButton">Draw</button>
+        
+        <ul>
+            <li>
+                <label for="zoom">Zoom</label>
+                <input id="zoom" name="zoom" value="1" type="number" min="1" >
+            </li>
+            <li>
+                <label for="center">Center Screen</label>
+                <p name="center" id="center"> 5 5 5 5 </p>
+            </li>
+            <li>
+                <label for="centerVirtual">Center Virtual</label>
+                <p name="centerVirtual" id="centerVirtual"> 5 5 5 5 </p>
+            </li>
+        </ul>
+        <menu>
+            <li><button onclick="setCanvasSize(2560, 1440)">2560x1440</button></li>
+            <li><button onclick="setCanvasSize(1920, 1080)">1920x1080</button></li>
+            <li><button onclick="setCanvasSize(400, 400)">400x400</button></li>
+        </menu>
+        <button type="button" id="resetRandomLayers">Reset Random Layers</button>
+        <div>
+            <input type="checkbox" id="randomLayers" name="randomLayers">
+            <label for="randomLayers">Random Layers</label>
+        </div>
+        <div>
+            <input type="checkbox" id="random" name="random">
+            <label for="random">Random</label>
+        </div>
+        <div>
+            <input type="checkbox" id="doubleResolution" name="doubleResolution">
+            <label for="doubleResolution">Double Resolution</label>
+        </div>
+
+        <canvas 
+            style=" position: relative; 
+                    margin: 10px;
+                    width: 400px; height: 400px;
+                    border-width: 1px; border-color: black; border-style: double;
+                    ",
+            id="mandelbrotCanvas",
+            >
+        </canvas>
+        <script src="Scripts/mandelbrot.js"></script>
+
+    </body>
+    
+</html>
