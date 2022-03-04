@@ -13,6 +13,7 @@ statsParagraphElement = document.getElementById("stats");
 randomLayersElement = document.getElementById("randomLayers");
 randomElement = document.getElementById("random");
 doubleResolutionElement = document.getElementById("doubleResolution");
+statusElement = document.getElementById("status");
 resetRandomElement = document.getElementById("resetRandomLayers");
 resetRandomElement.onclick = makeRandomLayers;
 
@@ -57,6 +58,8 @@ makeRandomLayers()
 console.log(randomLayers);
 
 function drawMandelbrot(){
+    buttonElement.disabled = true;
+    statusElement.innerHTML = "Working!!!";
 
     var zoom = parseFloat(zoomElement.value)
 
@@ -122,8 +125,14 @@ function drawMandelbrot(){
             canvasContext.fillRect( Px, Py, 1, 1);
 
         }
+        if( Py == parseInt(screenSizeY/2)){
+            statusElement.innerHTML += " Half Way!!"
+        }
     }
     console.log("done");
+    statusElement.innerHTML = "Click Draw to redraw"
+    zoomElement.value = 1;
+    buttonElement.disabled = false;
 }
 
 setCenter( [screenSizeX/2, screenSizeY/2] )
