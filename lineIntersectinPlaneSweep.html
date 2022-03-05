@@ -12,7 +12,10 @@
         <h1>
             Line Intersection
         </h1>
-        <button type="button" id="drawMandelbrotButton">Draw</button>
+        <button type="button" id="scanButton">Scan</button>
+        <div id="lineCount">Line Count = 0</div>
+        <div id="qDiv">Q = (Empty)</div>
+        <div id="lDiv">L = (Empty)</div>
         
 
         <canvas 
@@ -30,6 +33,10 @@
                                     border-width: 1px; border-color: black; 
                                     border-style: double;
                                     border-radius: 10px;
+                                    scroll-behavior: smooth;
+                                    overflow: hidden;
+                                    overflow-y: scroll;
+                                    
                                     ">
 
         </p>
