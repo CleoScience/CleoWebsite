@@ -1,4 +1,6 @@
 
+bodyElement = document.getElementById("body");
+
 canvasElement = document.getElementById("mandelbrotCanvas");
 canvasElement.width = 400;
 canvasElement.height = 400;
@@ -173,8 +175,12 @@ function makeRandomLayers(){
             layerColor = parseInt(Math.random() * i);
             randomLayers.push(layerColor);
         }
-
     }
+
+    r = randomLayers[255*3];
+    g = randomLayers[255*3 + 1];
+    b = randomLayers[255*3 + 2];
+    bodyElement.style.background = `rgb(${r},${g},${b})`;
 
     zoomElement.value = 1;
     drawMandelbrot();

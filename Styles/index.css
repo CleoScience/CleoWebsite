@@ -1,6 +1,16 @@
+body {
+    background-color: seagreen;
+}
 h2, h3 {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    position: relative; 
+    margin: 10px;
+    margin-top: 0px;
+    height: fit-content;
+    width: 25%;
+    border-width: 1px; border-color: black; border-style: double;
+    border-radius: 10px;
+    padding: 10px;
+    background-color:cadetblue;
 }
 menu {
     margin-top: 5px;
@@ -15,7 +25,7 @@ menu {
     margin: 1px;
 }
 
-.hiddenExplaination{
+.borderedDiv{
     position: relative; 
     margin: 10px;
     margin-top: 0px;
@@ -23,4 +33,5 @@ menu {
     border-width: 1px; border-color: black; border-style: double;
     border-radius: 10px;
     padding: 10px;
+    background-color: antiquewhite;
 }

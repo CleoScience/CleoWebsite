@@ -8,13 +8,13 @@
         <link rel="stylesheet" href="Styles/index.css">
     </head>
 
-    <body>
+    <body id="body" >
 
         <h1>
             Mandelbrot
         </h1>
         <h2>Description</h2>
-        <p class="hiddenExplaination" >
+        <p class="borderedDiv" >
             This page is intended to explore the Mandelbrot set. 
             Below is a canvas with the Mandelbrot set already rendered. 
             A number field allows you to set the zoom of that picture. 
@@ -27,7 +27,7 @@
             Use the default size as a view finder of sorts.
             </p>
         <h2>Instructions</h2>
-        <p class="hiddenExplaination">
+        <p class="borderedDiv">
             1.	Click on the Mandelbrot canvas. This will set the center of your next image so plan accordingly. <br>
             2.	Set the zoom. <br>
             3.	(Optional) Check the box that says Random Layers. This will only take affect after the draw button is clicked. <br>
@@ -40,11 +40,13 @@
         </p>
         <p id="stats" ></p>
         
-        <p class="coordinates" name="center" id="center"> If you see this something is broken!!! </p>
-        <p class="coordinates" name="centerVirtual" id="centerVirtual"> If you see this something is broken!!! </p>
-                
-        <h3>Options:</h3>
-        <menu>
+        <h2>Coordinates</h2>
+        <div class="borderedDiv">
+            <p class="coordinates" name="center" id="center"> If you see this something is broken!!! </p>
+            <p class="coordinates" name="centerVirtual" id="centerVirtual"> If you see this something is broken!!! </p>    
+        </div>    
+        <h2>Options:</h2>
+        <menu class="borderedDiv">
             <li><button onclick="setCanvasSize(2560, 1440)">2560x1440</button></li>
             <li><button onclick="setCanvasSize(1920, 1080)">1920x1080</button></li>
             <li><button onclick="setCanvasSize(400, 400)">400x400</button></li>
@@ -62,12 +64,16 @@
                 <label for="doubleResolution">Double Resolution</label>
             </li>
         </menu>
-        <button class="drawButton" type="button" id="drawMandelbrotButton">Draw</button>
+        <h2>Controls</h2>
+        <div class="borderedDiv">
+            <button class="drawButton" type="button" id="drawMandelbrotButton">Draw</button>
 
-        <div class="drawButton">
-            <label for="zoom">Zoom</label>
-            <input id="zoom" name="zoom" value="1" type="number" min="1" >
+            <div class="drawButton">
+                <label for="zoom">Zoom</label>
+                <input id="zoom" name="zoom" value="1" type="number" min="1" >
+            </div>
         </div>
+        
     
         <canvas 
             style=" position: relative; 
