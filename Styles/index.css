@@ -35,3 +35,8 @@ menu {
     padding: 10px;
     background-color: antiquewhite;
 }
+
+.colorPicker{
+    visibility: collapse;
+    
+}

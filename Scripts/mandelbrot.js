@@ -12,12 +12,67 @@ zoomElement = document.getElementById("zoom")
 centerElement = document.getElementById("center");
 centerVirtualElement = document.getElementById("centerVirtual");
 statsParagraphElement = document.getElementById("stats");
-randomLayersElement = document.getElementById("randomLayers");
-randomElement = document.getElementById("random");
 doubleResolutionElement = document.getElementById("doubleResolution");
 statusElement = document.getElementById("status");
+
+randomLayersElement = document.getElementById("randomLayers");
+randomLayersElement.onclick = randomLayersClick;
+
+randomElement = document.getElementById("random");
+randomElement.onclick = randomClick;
+
 resetRandomElement = document.getElementById("resetRandomLayers");
 resetRandomElement.onclick = makeRandomLayers;
+
+setThreeColorsElement = document.getElementById("setThreeColors");
+setThreeColorsElement.onclick = setThreeColorsClick;
+
+colorPickerElement = document.getElementById("colorPicker");
+
+
+customColorOneElement = document.getElementById("customColorOne");
+customColorTwoElement = document.getElementById("customColorTwo");
+customColorThreeElement = document.getElementById("customColorThree");
+customColorOneElement.onchange = colorChange;
+customColorTwoElement.onchange = colorChange;
+customColorThreeElement.onchange = colorChange;
+
+customColors = []
+
+function colorChange(){
+    customColors = []
+    customColors.push(customColorOneElement.value)
+    customColors.push(customColorTwoElement.value)
+    customColors.push(customColorThreeElement.value)
+    console.log(customColors)
+}
+
+function setThreeColorsClick(){
+    setOptions([false, false, true])
+}
+
+function randomLayersClick(){
+    setOptions([true, false, false])
+}
+
+function randomClick(){
+    setOptions([false, true, false])
+}
+
+function setColorPickerVisibility(){
+    if(setThreeColorsElement.checked){
+        colorPickerElement.style.visibility = "visible";
+    } else{
+        colorPickerElement.style.visibility = "collapse";
+    }
+}
+
+function setOptions(options){
+    randomLayersElement.checked = options[0]
+    randomElement.checked = options[1]
+    setThreeColorsElement.checked = options[2]
+    setColorPickerVisibility()
+}
 
 function canvasClick(event){
     const rectangle = canvasElement.getBoundingClientRect();
@@ -56,6 +111,7 @@ buttonElement.onclick = drawMandelbrot;
 
 drawMandelbrot()
 makeRandomLayers()
+colorChange()
 
 console.log(randomLayers);
 
@@ -116,6 +172,10 @@ function drawMandelbrot(){
                 var bColor = randomLayers[(iteration * 3) + 2]
                 rgb = `rgb(${rColor},${gColor},${bColor})` ;
             }
+            else if(setThreeColorsElement.checked){
+                rgb = customColors[iteration % 3];
+                // console.log(rgb)
+            }
             else if(randomElement.checked){
                 rgb = `rgb(${parseInt(Math.random() * iteration)},${parseInt(Math.random() * iteration)},${parseInt(Math.random() * iteration)})` ;
             } else{
@@ -168,6 +228,9 @@ function setCanvasSize(newWidth, newHeight){
 }
 
 function makeRandomLayers(){
+
+    randomElement.checked = false;
+
     randomLayers = []
     var max = 256;
     for(var i = 0; i < max; i++){

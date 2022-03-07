@@ -10,7 +10,7 @@
 
     <body id="body" >
 
-        <h1>
+        <h1 class="borderedDiv">
             Mandelbrot
         </h1>
         <h2>Description</h2>
@@ -62,6 +62,15 @@
             <li>
                 <input type="checkbox" id="doubleResolution" name="doubleResolution">
                 <label for="doubleResolution">Double Resolution</label>
+            </li>
+            <li>
+                <input type="checkbox" id="setThreeColors" name="setThreeColors">
+                <label for="setThreeColors">Set 3 Colors</label>
+                <div class="colorPicker" id="colorPicker">
+                    <input type="color" id="customColorOne" value="#ff0000">
+                    <input type="color" id="customColorTwo" value="#ffffff">
+                    <input type="color" id="customColorThree" value="#0000ff">
+                </div>
             </li>
         </menu>
         <h2>Controls</h2>
