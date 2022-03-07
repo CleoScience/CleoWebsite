@@ -1,0 +1,26 @@
+h2, h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+menu {
+    margin-top: 5px;
+}
+
+.drawButton{
+    margin: 5px;
+}
+
+.coordinates{
+    padding: 1px;
+    margin: 1px;
+}
+
+.hiddenExplaination{
+    position: relative; 
+    margin: 10px;
+    margin-top: 0px;
+    height: fit-content;
+    border-width: 1px; border-color: black; border-style: double;
+    border-radius: 10px;
+    padding: 10px;
+}

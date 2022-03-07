@@ -5,6 +5,7 @@
 <html>
     <head>
         <link rel="icon" href="Media/icon.png">
+        <link rel="stylesheet" href="Styles/index.css">
     </head>
 
     <body>
@@ -12,43 +13,62 @@
         <h1>
             Mandelbrot
         </h1>
-        <p id="stats" >
+        <h2>Description</h2>
+        <p class="hiddenExplaination" >
+            This page is intended to explore the Mandelbrot set. 
+            Below is a canvas with the Mandelbrot set already rendered. 
+            A number field allows you to set the zoom of that picture. 
+            Clicking on the Mandelbrot set image will paint a red square 
+            indicating where the center of the zoom will be; 
+            Default is the center (0,0). There are several settings enabled 
+            through a list of checkboxes. Several button below will allow 
+            resizing the image. It is recommended that you only use the larger 
+            setting when you find a space you want to see in greater detail. 
+            Use the default size as a view finder of sorts.
+            </p>
+        <h2>Instructions</h2>
+        <p class="hiddenExplaination">
+            1.	Click on the Mandelbrot canvas. This will set the center of your next image so plan accordingly. <br>
+            2.	Set the zoom. <br>
+            3.	(Optional) Check the box that says Random Layers. This will only take affect after the draw button is clicked. <br>
+            4.	Click draw. (On larger sizes this might take up to 30 seconds.) <br>
+            5.	(Optional) If the random colors are not to your liking click Reset Random Layers. <br>
+            6.	Repeat steps starting at 1 until an image you want to save is found. <br>
+            7.	(Optional) Click the check box labeled Double Resolution. <br>
+            8.	Click on a size. (This will take some time as it is about to redraw the image) <br>
+            9.	Right click on image for save options. <br>
         </p>
-        <button type="button" id="drawMandelbrotButton">Draw</button> <h1 id="status" style="color: red;">Click Draw to start!</h1>
+        <p id="stats" ></p>
         
-        <ul>
-            <li>
-                <label for="zoom">Zoom</label>
-                <input id="zoom" name="zoom" value="1" type="number" min="1" >
-            </li>
-            <li>
-                <label for="center">Center Screen</label>
-                <p name="center" id="center"> 5 5 5 5 </p>
-            </li>
-            <li>
-                <label for="centerVirtual">Center Virtual</label>
-                <p name="centerVirtual" id="centerVirtual"> 5 5 5 5 </p>
-            </li>
-        </ul>
+        <p class="coordinates" name="center" id="center"> If you see this something is broken!!! </p>
+        <p class="coordinates" name="centerVirtual" id="centerVirtual"> If you see this something is broken!!! </p>
+                
+        <h3>Options:</h3>
         <menu>
             <li><button onclick="setCanvasSize(2560, 1440)">2560x1440</button></li>
             <li><button onclick="setCanvasSize(1920, 1080)">1920x1080</button></li>
             <li><button onclick="setCanvasSize(400, 400)">400x400</button></li>
+            <li><button type="button" id="resetRandomLayers">Reset Random Layers</button></li>
+            <li>
+                <input type="checkbox" id="randomLayers" name="randomLayers">
+                <label for="randomLayers">Random Layers</label>
+            </li>
+            <li>
+                <input type="checkbox" id="random" name="random">
+                <label for="random">Random</label>
+            </li>
+            <li>
+                <input type="checkbox" id="doubleResolution" name="doubleResolution">
+                <label for="doubleResolution">Double Resolution</label>
+            </li>
         </menu>
-        <button type="button" id="resetRandomLayers">Reset Random Layers</button>
-        <div>
-            <input type="checkbox" id="randomLayers" name="randomLayers">
-            <label for="randomLayers">Random Layers</label>
-        </div>
-        <div>
-            <input type="checkbox" id="random" name="random">
-            <label for="random">Random</label>
-        </div>
-        <div>
-            <input type="checkbox" id="doubleResolution" name="doubleResolution">
-            <label for="doubleResolution">Double Resolution</label>
-        </div>
+        <button class="drawButton" type="button" id="drawMandelbrotButton">Draw</button>
 
+        <div class="drawButton">
+            <label for="zoom">Zoom</label>
+            <input id="zoom" name="zoom" value="1" type="number" min="1" >
+        </div>
+    
         <canvas 
             style=" position: relative; 
                     margin: 10px;

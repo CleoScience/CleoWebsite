@@ -59,7 +59,6 @@ console.log(randomLayers);
 
 function drawMandelbrot(){
     buttonElement.disabled = true;
-    statusElement.innerHTML = "Working!!!";
 
     var zoom = parseFloat(zoomElement.value)
 
@@ -125,12 +124,8 @@ function drawMandelbrot(){
             canvasContext.fillRect( Px, Py, 1, 1);
 
         }
-        if( Py == parseInt(screenSizeY/2)){
-            statusElement.innerHTML += " Half Way!!"
-        }
     }
     console.log("done");
-    statusElement.innerHTML = "Click Draw to redraw"
     zoomElement.value = 1;
     buttonElement.disabled = false;
 }
