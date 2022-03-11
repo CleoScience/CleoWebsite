@@ -48,15 +48,28 @@ function colorChange(){
 }
 
 function setThreeColorsClick(){
-    setOptions([false, false, true])
+    if(setThreeColorsElement.checked){
+        setOptions([false, false, true])
+    } else{
+        setOptions([false, false, false])
+    }
 }
 
 function randomLayersClick(){
-    setOptions([true, false, false])
+    
+    if(randomLayersElement.checked){
+        setOptions([true, false, false])
+    } else{
+        setOptions([false, false, false])
+    }
 }
 
 function randomClick(){
-    setOptions([false, true, false])
+    if(randomElement.checked){
+        setOptions([false, true, false])
+    } else{
+        setOptions([false, false, false])
+    }
 }
 
 function setColorPickerVisibility(){
