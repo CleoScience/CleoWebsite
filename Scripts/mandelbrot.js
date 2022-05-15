@@ -27,8 +27,11 @@ resetRandomElement.onclick = makeRandomLayers;
 setThreeColorsElement = document.getElementById("setThreeColors");
 setThreeColorsElement.onclick = setThreeColorsClick;
 
-colorPickerElement = document.getElementById("colorPicker");
+setSpectrumElement = document.getElementById("setSpectrum");
+setSpectrumElement.onclick = setSpectrumClick;
 
+colorPickerElement = document.getElementById("colorPicker");
+spectrumColorPickerElement = document.getElementById("spectrumColorPicker");
 
 customColorOneElement = document.getElementById("customColorOne");
 customColorTwoElement = document.getElementById("customColorTwo");
@@ -39,36 +42,58 @@ customColorThreeElement.onchange = colorChange;
 
 customColors = []
 
+spectrumColorOneElement = document.getElementById("spectrumColorOne");
+spectrumColorTwoElement = document.getElementById("spectrumColorTwo");
+spectrumColorOneElement.onchange = spectrumColorChange;
+spectrumColorTwoElement.onchange = spectrumColorChange;
+
+spectrumColors = []
+
 function colorChange(){
-    customColors = []
+    customColors = [] // clear array
     customColors.push(customColorOneElement.value)
     customColors.push(customColorTwoElement.value)
     customColors.push(customColorThreeElement.value)
     console.log(customColors)
 }
+function spectrumColorChange(){
+    spectrumColors = [] // clear array
+    spectrumColors.push(spectrumColorOneElement.value)
+    spectrumColors.push(spectrumColorTwoElement.value)
+    console.log(spectrumColors)
+    setSpecturmColors();
+}
 
 function setThreeColorsClick(){
     if(setThreeColorsElement.checked){
-        setOptions([false, false, true])
+        setOptions([false, false, true, false])
     } else{
-        setOptions([false, false, false])
+        setOptions([false, false, false, false])
+    }
+}
+
+function setSpectrumClick(){
+    if(setThreeColorsElement.checked){
+        setOptions([false, false, false, true])
+    } else{
+        setOptions([false, false, false, false])
     }
 }
 
 function randomLayersClick(){
     
     if(randomLayersElement.checked){
-        setOptions([true, false, false])
+        setOptions([true, false, false, false])
     } else{
-        setOptions([false, false, false])
+        setOptions([false, false, false, false])
     }
 }
 
 function randomClick(){
     if(randomElement.checked){
-        setOptions([false, true, false])
+        setOptions([false, true, false, false])
     } else{
-        setOptions([false, false, false])
+        setOptions([false, false, false, false])
     }
 }
 
@@ -78,12 +103,18 @@ function setColorPickerVisibility(){
     } else{
         colorPickerElement.style.visibility = "collapse";
     }
+    if(setSpectrumElement.checked){
+        spectrumColorPickerElement.style.visibility = "visible";
+    } else{
+        spectrumColorPickerElement.style.visibility = "collapse";
+    }
 }
 
 function setOptions(options){
     randomLayersElement.checked = options[0]
     randomElement.checked = options[1]
     setThreeColorsElement.checked = options[2]
+    setSpectrumElement.checked = options[3]
     setColorPickerVisibility()
 }
 
@@ -117,6 +148,7 @@ centerVirtualX = 0.0
 centerVirtualY = 0.0
 
 randomLayers = []
+spectrumLayers = []
 
 
 buttonElement = document.getElementById("drawMandelbrotButton")
@@ -125,6 +157,7 @@ buttonElement.onclick = drawMandelbrot;
 drawMandelbrot()
 makeRandomLayers()
 colorChange()
+spectrumColorChange()
 
 console.log(randomLayers);
 
@@ -191,6 +224,14 @@ function drawMandelbrot(){
             }
             else if(randomElement.checked){
                 rgb = `rgb(${parseInt(Math.random() * iteration)},${parseInt(Math.random() * iteration)},${parseInt(Math.random() * iteration)})` ;
+            } 
+            else if(setSpectrumElement.checked){
+
+                var rColor = spectrumLayers[iteration * 3]
+                var gColor = spectrumLayers[(iteration * 3) + 1]
+                var bColor = spectrumLayers[(iteration * 3) + 2]
+                rgb = `rgb(${rColor},${gColor},${bColor})` ; 
+
             } else{
                 rgb = `rgb(${iteration},${iteration},${iteration})` ;
             }
@@ -237,6 +278,43 @@ function setCanvasSize(newWidth, newHeight){
 
 
     drawMandelbrot();
+
+}
+
+function setSpecturmColors(){
+
+    spectrumLayers = []
+    var max = 256;
+    var oneWeight = 0;
+    var twoWeight = 256;
+    var r;
+    var g;
+    var b;
+
+    for(var i = 0; i < max; i++){
+        one = spectrumColors[0].slice(1,3)
+        R = parseInt(spectrumColors[0].slice(1,3), 16)
+        G = parseInt(spectrumColors[0].slice(3,5), 16)
+        B = parseInt(spectrumColors[0].slice(5,7), 16)
+        r = Math.max( parseInt(parseInt(spectrumColors[0].slice(1,3), 16)-oneWeight), parseInt(parseInt(spectrumColors[1].slice(1,3), 16)-twoWeight)  );
+        g = Math.max( parseInt(parseInt(spectrumColors[0].slice(3,5), 16)-oneWeight), parseInt(parseInt(spectrumColors[1].slice(3,5), 16)-twoWeight)  );
+        b = Math.max( parseInt(parseInt(spectrumColors[0].slice(5,7), 16)-oneWeight), parseInt(parseInt(spectrumColors[1].slice(5,7), 16)-twoWeight)  );
+        if(r < 0){
+            r = 0;
+        }
+        if(g < 0){
+            g = 0;
+        }
+        if(b < 0){
+            b = 0;
+        }
+        spectrumLayers.push(r);
+        spectrumLayers.push(g);
+        spectrumLayers.push(b);
+
+        oneWeight++;
+        twoWeight--;
+    }
 
 }
 
