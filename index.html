@@ -64,6 +64,10 @@
                 <label for="doubleResolution">Double Resolution</label>
             </li>
             <li>
+                <input type="checkbox" id="borderOnly" name="borderOnly">
+                <label for="borderOnly">Border Only</label>
+            </li>
+            <li>
                 <input type="checkbox" id="setThreeColors" name="setThreeColors">
                 <label for="setThreeColors">Set 3 Colors</label>
                 <div class="colorPicker" id="colorPicker">
@@ -83,6 +87,8 @@
         </menu>
         <h2>Controls</h2>
         <div class="borderedDiv">
+            <button class="drawButton" type="button" id="resetButton">Reset</button>
+            <br/>
             <button class="drawButton" type="button" id="drawMandelbrotButton">Draw</button>
 
             <div class="drawButton">

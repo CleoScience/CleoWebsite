@@ -24,6 +24,9 @@ randomElement.onclick = randomClick;
 resetRandomElement = document.getElementById("resetRandomLayers");
 resetRandomElement.onclick = makeRandomLayers;
 
+borderOnlyElement = document.getElementById("borderOnly");
+borderOnlyElement.onclick = makeBorder;
+
 setThreeColorsElement = document.getElementById("setThreeColors");
 setThreeColorsElement.onclick = setThreeColorsClick;
 
@@ -73,7 +76,7 @@ function setThreeColorsClick(){
 }
 
 function setSpectrumClick(){
-    if(setThreeColorsElement.checked){
+    if(setSpectrumElement.checked){
         setOptions([false, false, false, true])
     } else{
         setOptions([false, false, false, false])
@@ -136,23 +139,28 @@ function canvasClick(event){
 
 // variables
 
-screenSizeX = 400
-screenSizeY = 400
-modelLeft = -2.0
-modelRight = 2.0
-modelBottom = -2.0
-modelTop = 2.0
-centerX = 0.0
-centerY = 0.0
-centerVirtualX = 0.0
-centerVirtualY = 0.0
+screenSizeX = 400;
+screenSizeY = 400;
+modelLeft = -2.0;
+modelRight = 2.0;
+modelBottom = -2.0;
+modelTop = 2.0;
+centerX = 0.0;
+centerY = 0.0;
+centerVirtualX = 0.0;
+centerVirtualY = 0.0;
 
-randomLayers = []
-spectrumLayers = []
+borderThickness = 1;
+
+randomLayers = [];
+spectrumLayers = [];
 
 
 buttonElement = document.getElementById("drawMandelbrotButton")
 buttonElement.onclick = drawMandelbrot;
+
+resetButtonElement = document.getElementById("resetButton")
+resetButtonElement.onclick = resetMandelbrot;
 
 drawMandelbrot()
 makeRandomLayers()
@@ -232,6 +240,14 @@ function drawMandelbrot(){
                 var bColor = spectrumLayers[(iteration * 3) + 2]
                 rgb = `rgb(${rColor},${gColor},${bColor})` ; 
 
+            } 
+            else if(borderOnly.checked){
+                if(iteration < 256 - borderThickness){
+                    rgb = `rgb(${iteration},${iteration},${iteration})` ;
+                } else{
+                    rgb = `rgb(${0},${0},${0})` ;
+                }
+
             } else{
                 rgb = `rgb(${iteration},${iteration},${iteration})` ;
             }
@@ -292,10 +308,6 @@ function setSpecturmColors(){
     var b;
 
     for(var i = 0; i < max; i++){
-        one = spectrumColors[0].slice(1,3)
-        R = parseInt(spectrumColors[0].slice(1,3), 16)
-        G = parseInt(spectrumColors[0].slice(3,5), 16)
-        B = parseInt(spectrumColors[0].slice(5,7), 16)
         r = Math.max( parseInt(parseInt(spectrumColors[0].slice(1,3), 16)-oneWeight), parseInt(parseInt(spectrumColors[1].slice(1,3), 16)-twoWeight)  );
         g = Math.max( parseInt(parseInt(spectrumColors[0].slice(3,5), 16)-oneWeight), parseInt(parseInt(spectrumColors[1].slice(3,5), 16)-twoWeight)  );
         b = Math.max( parseInt(parseInt(spectrumColors[0].slice(5,7), 16)-oneWeight), parseInt(parseInt(spectrumColors[1].slice(5,7), 16)-twoWeight)  );
@@ -315,6 +327,8 @@ function setSpecturmColors(){
         oneWeight++;
         twoWeight--;
     }
+
+    drawMandelbrot();
 
 }
 
@@ -339,4 +353,113 @@ function makeRandomLayers(){
     zoomElement.value = 1;
     drawMandelbrot();
     
+}
+
+function resetMandelbrot(){
+
+    modelLeft = -2.0
+    modelRight = 2.0
+    modelBottom = -2.0
+    modelTop = 2.0
+    centerX = 0.0
+    centerY = 0.0
+    centerVirtualX = 0.0
+    centerVirtualY = 0.0
+
+    drawMandelbrot();
+}
+
+function makeBorder(){
+    makeRandomLayersBorder();
+    //setSpectrumClickBorder();
+}
+function makeRandomLayersBorder(){
+
+    randomElement.checked = false;
+
+    outsideColor = [parseInt(Math.random() * 256), parseInt(Math.random() * 256), parseInt(Math.random() * 256) ]
+    borderColor = [parseInt(Math.random() * 256), parseInt(Math.random() * 256), parseInt(Math.random() * 256) ]
+    insideColor = [parseInt(Math.random() * 256), parseInt(Math.random() * 256), parseInt(Math.random() * 256) ]
+
+    outsideLimit = 255-borderThickness
+
+    randomLayers = []
+    var max = 256;
+    for(var i = 0; i < outsideLimit; i++){
+        for(var j = 0; j < 3; j++){
+            randomLayers.push(outsideColor[j]);
+        }
+    }
+    for(var i = 0; i < borderThickness; i++){
+        for(var j = 0; j < 3; j++){
+            randomLayers.push(borderColor[j]);
+        }
+    }
+    for(var j = 0; j < 3; j++){
+        randomLayers.push(insideColor[j]);
+    }
+
+    r = randomLayers[255*3];
+    g = randomLayers[255*3 + 1];
+    b = randomLayers[255*3 + 2];
+    bodyElement.style.background = `rgb(${r},${g},${b})`;
+
+    zoomElement.value = 1;
+    drawMandelbrot();
+    
+}
+
+function setSpectrumClickBorder(){
+
+    spectrumLayers = []
+    var max = 256;
+    var oneWeight = 0;
+    var twoWeight = 256;
+    var r;
+    var g;
+    var b;
+
+    for(var i = 0; i < max-borderThickness; i++){
+        r = parseInt(parseInt(spectrumColors[0].slice(1,3), 16));
+        g = parseInt(parseInt(spectrumColors[0].slice(3,5), 16));
+        b = parseInt(parseInt(spectrumColors[0].slice(5,7), 16));
+
+        spectrumLayers.push(r);
+        spectrumLayers.push(g);
+        spectrumLayers.push(b);
+    }
+
+    for(var i = 0; i < borderThickness; i++){
+        r = Math.max( parseInt(parseInt(spectrumColors[0].slice(1,3), 16)-oneWeight), parseInt(parseInt(spectrumColors[1].slice(1,3), 16)-twoWeight)  );
+        g = Math.max( parseInt(parseInt(spectrumColors[0].slice(3,5), 16)-oneWeight), parseInt(parseInt(spectrumColors[1].slice(3,5), 16)-twoWeight)  );
+        b = Math.max( parseInt(parseInt(spectrumColors[0].slice(5,7), 16)-oneWeight), parseInt(parseInt(spectrumColors[1].slice(5,7), 16)-twoWeight)  );
+        if(r < 0){
+            r = 0;
+        }
+        if(g < 0){
+            g = 0;
+        }
+        if(b < 0){
+            b = 0;
+        }
+        spectrumLayers.push(r);
+        spectrumLayers.push(g);
+        spectrumLayers.push(b);
+
+        oneWeight++;
+        twoWeight--;
+    }
+    for(var i = 0; i < borderThickness; i++){
+        r = parseInt(parseInt(spectrumColors[1].slice(1,3), 16));
+        g = parseInt(parseInt(spectrumColors[1].slice(3,5), 16));
+        b = parseInt(parseInt(spectrumColors[1].slice(5,7), 16));
+
+        spectrumLayers.push(r);
+        spectrumLayers.push(g);
+        spectrumLayers.push(b);
+
+        oneWeight++;
+        twoWeight--;
+    }
+
 }
