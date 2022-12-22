@@ -1,10 +1,12 @@
 
-var width = 50;
-var height = 50;
+var width = 800;
+var height = 700;
+var generationCount = 0;
 
 canvasElement = document.getElementById("lifeCanvas");
 canvasContext = canvasElement.getContext('2d');
 
+// set up grid
 var grid = Array(height);
 for (var i = 0; i < grid.length; i++) {
     grid[i] = Array(width);
@@ -16,21 +18,15 @@ for (var y = 0; y < grid.length; y++) {
     }
 }
 
-console.log(grid);
+seed = [[25, 25], [25, 23], [24, 24], [26, 24], [0, 0], [1, 0], [0, 1], [40, 7], [40, 6], [40, 5], [40, 3], [39, 7], [39, 6], [39, 5]];
 
-seed = [[25, 25], [25, 23], [24, 24], [26,24], [0, 0], [1, 10], [40, 7], [40,6], [40, 5], [40, 3], [39, 7], [39,6], [39, 5]];
+// plantSeed();
+plantRandomSeed(Math.floor((width*height)/10));
 
-plantSeed();
+setInterval(generateAndDraw, 500);
 
-console.log(grid);
-
-createNextGeneration();
-
-console.log(grid);
-
-setTimeout(generateAndDraw, 1000);
-
-function generateAndDraw(){
+function generateAndDraw() {
+    console.log("Generations: ", generationCount++);
     createNextGeneration();
     drawGrid();
 }
@@ -40,75 +36,84 @@ function plantSeed() {
         grid[element[0]][element[1]] = 1;
     });
 }
+function plantRandomSeed(seedCount){
+    console.log(seedCount, " seeds will be planted");
+    for(var i = 0; i < seedCount; i++){
+        grid[Math.floor(Math.random()*(height-1))][Math.floor(Math.random()*(width-1))] = 1;
+    }
+}
 
 function createNextGeneration() {
     var nextGeneration = Array(height);
     for (var i = 0; i < grid.length; i++) {
         nextGeneration[i] = Array(width);
     }
-
+    var neighbourCount = 0;
     for (var y = 0; y < grid.length; y++) {
         for (var x = 0; x < grid[y].length; x++) {
-            var neighbourCount = 0; 
+            neighbourCount = 0;
             // check top left    y-1 x-1
-            if(y > 0 && x > 0){
+            if (y > 0 && x > 0) {
                 // do check
-                if(grid[y-1][x-1] == 1){
+                if (grid[y - 1][x - 1] == 1) {
                     neighbourCount++;
                 }
             }
             // check top    y-1
-            if(y > 0){
+            if (y > 0) {
                 // do check
-                if(grid[y-1][x] == 1){
+                if (grid[y - 1][x] == 1) {
                     neighbourCount++;
                 }
             }
             // check top right    y-1 x+1
-            if(y > 0 && x < width-1){
+            if (y > 0 && x < width - 1) {
                 // do check
-                if(grid[y-1][x+1] == 1){
+                if (grid[y - 1][x + 1] == 1) {
                     neighbourCount++;
                 }
             }
             // check left   x-1
-            if(x > 0){
+            if (x > 0) {
                 // do check
-                if(grid[y][x-1] == 1){
+                if (grid[y][x - 1] == 1) {
                     neighbourCount++;
                 }
             }
             // check right  x+1
-            if(x < width-1){
+            if (x < width - 1) {
                 // do check
-                if(grid[y][x+1] == 1){
+                if (grid[y][x + 1] == 1) {
                     neighbourCount++;
                 }
             }
             // check bottom left y+1 x-1
-            if(y < height-1 && x > 0){
+            if (y < height - 1 && x > 0) {
                 // do check
-                if(grid[y+1][x-1] == 1){
+                if (grid[y + 1][x - 1] == 1) {
                     neighbourCount++;
                 }
             }
             // check bottom y+1
-            if(y < height-1){
+            if (y < height - 1) {
                 // do check
-                if(grid[y+1][x] == 1){
+                if (grid[y + 1][x] == 1) {
                     neighbourCount++;
                 }
             }
             // check bottom right y+1 x+1
-            if(y < height-1 && x < width-1){
+            if (y < height - 1 && x < width - 1) {
                 // do check
-                if(grid[y+1][x-1] == 1){
+                if (grid[y + 1][x + 1] == 1) {
                     neighbourCount++;
                 }
             }
-            if(neighbourCount <= 3 && neighbourCount >= 2 ){
+            if (grid[y][x] == 1 && (neighbourCount == 3 || neighbourCount == 2)) {
                 nextGeneration[y][x] = 1;
-            } else{
+            } else if (grid[y][x] == 0 && neighbourCount == 3){
+                nextGeneration[y][x] = 1;
+            } else {
+                // console.log(x, y, "dead cell")
                 nextGeneration[y][x] = 0;
             }
         }
@@ -117,18 +122,23 @@ function createNextGeneration() {
 }
 
 function drawGrid() {
-    var cellWidth = 10;
-    var cellHeight = 10;
+    var cellWidth = 1;
+    var cellHeight = 1;
 
     canvasContext.fillStyle = 'white';
     canvasContext.fillRect(0, 0, width, height);
 
     canvasContext.fillStyle = 'black';
-    for (var i = 0; i <= height; i = i + cellHeight) {
-        canvasContext.fillRect(0, i, width, 1);
-    }
-    for (var i = 0; i <= width; i = i + cellWidth) {
-        canvasContext.fillRect(i, 0, 1, height);
+    for (var y = 0; y <= height-1; y++) {
+        for (var x = 0; x <= width-1; x++) {
+            if (grid[y][x] > 0) {
+                canvasContext.fillStyle = 'black';
+                canvasContext.fillRect(x, y, cellWidth, cellHeight);
+            }else{
+                canvasContext.fillStyle = 'white';
+                canvasContext.fillRect(x, y, cellWidth, cellHeight);
+            }
+        }
     }
 
 
