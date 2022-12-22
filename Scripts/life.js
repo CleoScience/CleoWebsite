@@ -108,14 +108,17 @@ function createNextGeneration() {
                     neighbourCount++;
                 }
             }
+
             if (grid[y][x] >= 1 && (neighbourCount == 3 || neighbourCount == 2)) {
+                // for all live cells,
+                // If it has 2 or 3 neighbors it continues living (ages)
                 nextGeneration[y][x] = grid[y][x] + 1;
-                // console.log(nextGeneration[y][x])
-                // nextGeneration[y][x] = 1;
             } else if (grid[y][x] == 0 && neighbourCount == 3){
+                // for all dead cells,
+                // if it has exactly 3 neighbors it is repopulated (age 1)
                 nextGeneration[y][x] = 1;
             } else {
-                // console.log(x, y, "dead cell")
+                // All other cells die (age 0)
                 nextGeneration[y][x] = 0;
             }
         }
