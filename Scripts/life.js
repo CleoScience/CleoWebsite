@@ -28,6 +28,12 @@ createNextGeneration();
 
 console.log(grid);
 
+setTimeout(generateAndDraw, 1000);
+
+function generateAndDraw(){
+    createNextGeneration();
+    drawGrid();
+}
 
 function plantSeed() {
     seed.forEach(element => {
@@ -41,11 +47,6 @@ function createNextGeneration() {
         nextGeneration[i] = Array(width);
     }
 
-    // for (var y = 0; y < nextGeneration.length; y++) {
-    //     for (var x = 0; x < nextGeneration[y].length; x++) {
-    //         nextGeneration[y][x] = 0;
-    //     }
-    // }
     for (var y = 0; y < grid.length; y++) {
         for (var x = 0; x < grid[y].length; x++) {
             var neighbourCount = 0; 
@@ -87,7 +88,6 @@ function createNextGeneration() {
             // check bottom left y+1 x-1
             if(y < height-1 && x > 0){
                 // do check
-                console.log(x, y);
                 if(grid[y+1][x-1] == 1){
                     neighbourCount++;
                 }
@@ -95,7 +95,6 @@ function createNextGeneration() {
             // check bottom y+1
             if(y < height-1){
                 // do check
-                console.log(x, y);
                 if(grid[y+1][x] == 1){
                     neighbourCount++;
                 }
@@ -103,7 +102,6 @@ function createNextGeneration() {
             // check bottom right y+1 x+1
             if(y < height-1 && x < width-1){
                 // do check
-                console.log(x, y);
                 if(grid[y+1][x-1] == 1){
                     neighbourCount++;
                 }
@@ -136,4 +134,3 @@ function drawGrid() {
 
 }
 
-drawGrid();
