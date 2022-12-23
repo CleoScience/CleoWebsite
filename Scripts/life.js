@@ -1,8 +1,8 @@
 // todo:
-//      Add a generation counter in html
-//      add a population counter in html
+        // Track max and min populationCount
+        // track starting populationCount
 
-var width = 900;
+var width = 700;
 var height = 700;
 var generationCount = 0;
 var populationCount = 0;
