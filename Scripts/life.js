@@ -1,7 +1,19 @@
+// todo:
+//      Add a generation counter in html
+//      add a population counter in html
 
 var width = 900;
 var height = 700;
 var generationCount = 0;
+var populationCount = 0;
+
+var generationNumberElement = document.getElementById("generationNumber");
+var populationNumberElement = document.getElementById("populationNumber");
+
+function updateNumberElements(){
+    generationNumberElement.innerHTML = generationCount;
+    populationNumberElement.innerHTML = populationCount;
+}
 
 canvasElement = document.getElementById("lifeCanvas");
 canvasContext = canvasElement.getContext('2d');
@@ -29,6 +41,7 @@ function generateAndDraw() {
     console.log("Generations: ", generationCount++);
     createNextGeneration();
     drawGrid();
+    updateNumberElements();
 }
 
 function plantSeed() {
@@ -44,6 +57,7 @@ function plantRandomSeed(seedCount){
 }
 
 function createNextGeneration() {
+    populationCount = 0;
     var nextGeneration = Array(height);
     for (var i = 0; i < grid.length; i++) {
         nextGeneration[i] = Array(width);
@@ -113,10 +127,12 @@ function createNextGeneration() {
                 // for all live cells,
                 // If it has 2 or 3 neighbors it continues living (ages)
                 nextGeneration[y][x] = grid[y][x] + 1;
+                populationCount++;
             } else if (grid[y][x] == 0 && neighbourCount == 3){
                 // for all dead cells,
                 // if it has exactly 3 neighbors it is repopulated (age 1)
                 nextGeneration[y][x] = 1;
+                populationCount++;
             } else {
                 // All other cells die (age 0)
                 nextGeneration[y][x] = 0;
