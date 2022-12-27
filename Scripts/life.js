@@ -2,8 +2,8 @@
         // Track max and min populationCount
         // track starting populationCount
 
-var width = 700;
-var height = 700;
+var width = 500;
+var height = 500;
 var generationCount = 0;
 var populationCount = 0;
 

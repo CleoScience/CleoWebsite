@@ -2,8 +2,8 @@ body {
     display:flex;
 }
 canvas{
-    width: 700px;
-    height: 700px;
+    /* width: 700px;
+    height: 700px; */
     border-radius: 2px;
     border-color: black;
     border-width: 2px;
