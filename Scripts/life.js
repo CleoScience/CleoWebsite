@@ -2,26 +2,32 @@
 // Track max and min populationCount
 // track starting populationCount
 
-var width = 500;
-var height = 500;
+canvasElement = document.getElementById("lifeCanvas");
+canvasContext = canvasElement.getContext('2d');
+
+var width = canvasElement.width;
+var height = canvasElement.height;
 var totalCells = width * height;
 var generationCount = 0;
 var populationCount = 0;
 var peekPopulationCount = 0;
 var peekPopulationGeneration = 0;
+var intervalLength = 100; // ms
+var populationRecord = [];
+var populationAverage = 0;
 
 var generationNumberElement = document.getElementById("generationNumber");
 var populationNumberElement = document.getElementById("populationNumber");
 var peakPopulationElement = document.getElementById("PeakPopulation");
+var averagePopulationElement = document.getElementById("AveragePopulation");
 
 function updateNumberElements() {
     generationNumberElement.innerHTML = generationCount;
     populationNumberElement.innerHTML = populationCount;
     peakPopulationElement.innerHTML = String(peekPopulationCount) + "(Gen: " + String(peekPopulationGeneration) + ")";
+    averagePopulationElement.innerHTML = String(populationAverage);
 }
 
-canvasElement = document.getElementById("lifeCanvas");
-canvasContext = canvasElement.getContext('2d');
 
 // set up grid
 var grid = Array(height);
@@ -38,9 +44,9 @@ for (var y = 0; y < grid.length; y++) {
 seed = [[25, 25], [25, 23], [24, 24], [26, 24], [0, 0], [1, 0], [0, 1], [40, 7], [40, 6], [40, 5], [40, 3], [39, 7], [39, 6], [39, 5]];
 
 // plantSeed();
-plantRandomSeed(Math.floor((totalCells) / 5));
+plantRandomSeed(Math.floor((totalCells) / 10));
 
-setInterval(generateAndDraw, 500);
+setInterval(generateAndDraw, intervalLength);
 
 function generateAndDraw() {
     console.log("Generations: ", generationCount++);
@@ -66,7 +72,62 @@ function plantRandomSeed(seedCount) {
         grid[Math.floor(Math.random() * (height - 1))][Math.floor(Math.random() * (width - 1))] = 1;
     }
 }
-
+function lookUp(y) {
+    var up = y - 1;
+    if (up < 0) {
+        return height - 1;
+    } else {
+        return up;
+    }
+}
+function lookDown(y) {
+    var down = y + 1;
+    if (down >= height) {
+        return 0;
+    } else {
+        return down;
+    }
+}
+function lookLeft(x) {
+    var left = x - 1;
+    if (left < 0) {
+        return width - 1;
+    } else {
+        return left;
+    }
+}
+function lookRight(x) {
+    var right = x + 1;
+    if (right >= width) {
+        return 0;
+    } else {
+        return right;
+    }
+}
+function checkTopLeft(x, y) {
+    return grid[lookUp(y)][lookLeft(x)] >= 1;
+}
+function checkTopCenter(x, y) {
+    return grid[lookUp(y)][x] >= 1;
+}
+function checkTopRight(x, y) {
+    return grid[lookUp(y)][lookRight(x)] >= 1;
+}
+function checkLeft(x, y) {
+    return grid[y][lookLeft(x)] >= 1;
+}
+function checkRight(x, y) {
+    return grid[y][lookRight(x)] >= 1;
+}
+function checkBottomLeft(x, y) {
+    return grid[lookDown(y)][lookLeft(x)] >= 1;
+}
+function checkBottomCenter(x, y) {
+    return grid[lookDown(y)][x] >= 1;
+}
+function checkBottomRight(x, y) {
+    return grid[lookDown(y)][lookRight(x)] >= 1;
+}
 function createNextGeneration() {
     /**
      * Rules:
@@ -84,62 +145,39 @@ function createNextGeneration() {
     for (var y = 0; y < grid.length; y++) {
         for (var x = 0; x < grid[y].length; x++) {
             neighbourCount = 0;
-            // check top left    y-1 x-1
-            if (y > 0 && x > 0) {
-                // do check
-                if (grid[y - 1][x - 1] >= 1) {
-                    neighbourCount++;
-                }
+            // check top left    
+            if (checkTopLeft(x, y)) {
+                neighbourCount++;
             }
-            // check top    y-1
-            if (y > 0) {
-                // do check
-                if (grid[y - 1][x] >= 1) {
-                    neighbourCount++;
-                }
+            // check top    
+            if (checkTopCenter(x, y)) {
+                neighbourCount++;
             }
-            // check top right    y-1 x+1
-            if (y > 0 && x < width - 1) {
-                // do check
-                if (grid[y - 1][x + 1] >= 1) {
-                    neighbourCount++;
-                }
+            // check top right
+            if (checkTopRight(x, y)) {
+                neighbourCount++;
             }
-            // check left   x-1
-            if (x > 0) {
-                // do check
-                if (grid[y][x - 1] >= 1) {
-                    neighbourCount++;
-                }
+            // check left  
+            if (checkLeft(x, y)) {
+                neighbourCount++;
             }
-            // check right  x+1
-            if (x < width - 1) {
-                // do check
-                if (grid[y][x + 1] >= 1) {
-                    neighbourCount++;
-                }
+            // check right  
+            if (checkRight(x, y)) {
+                neighbourCount++;
             }
-            // check bottom left y+1 x-1
-            if (y < height - 1 && x > 0) {
-                // do check
-                if (grid[y + 1][x - 1] >= 1) {
-                    neighbourCount++;
-                }
+            // check bottom left
+            if (checkBottomLeft(x, y)) {
+                neighbourCount++;
             }
-            // check bottom y+1
-            if (y < height - 1) {
-                // do check
-                if (grid[y + 1][x] >= 1) {
-                    neighbourCount++;
-                }
+            // check bottom 
+            if (checkBottomCenter(x, y)) {
+                neighbourCount++;
             }
-            // check bottom right y+1 x+1
-            if (y < height - 1 && x < width - 1) {
-                // do check
-                if (grid[y + 1][x + 1] >= 1) {
-                    neighbourCount++;
-                }
+            // check bottom right 
+            if (checkBottomRight(x, y)) {
+                neighbourCount++;
             }
+            // Next generation check
             if (grid[y][x] >= 1) {
                 // for living cells
                 // rule 1.
@@ -175,6 +213,9 @@ function createNextGeneration() {
         peekPopulationCount = populationCount;
         peekPopulationGeneration = generationCount;
     }
+    populationRecord.push(populationCount);
+    var sum = populationRecord.reduce((a, b) => a + b, 0);
+    populationAverage = sum / populationRecord.length;
     grid = nextGeneration;
 }
 
