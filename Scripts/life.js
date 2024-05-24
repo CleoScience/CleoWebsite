@@ -1,18 +1,22 @@
 // todo:
-        // Track max and min populationCount
-        // track starting populationCount
+// Track max and min populationCount
+// track starting populationCount
 
 var width = 500;
 var height = 500;
 var generationCount = 0;
 var populationCount = 0;
+var peekPopulationCount = 0;
+var peekPopulationGeneration = 0;
 
 var generationNumberElement = document.getElementById("generationNumber");
 var populationNumberElement = document.getElementById("populationNumber");
+var peakPopulationElement = document.getElementById("PeakPopulation");
 
-function updateNumberElements(){
+function updateNumberElements() {
     generationNumberElement.innerHTML = generationCount;
     populationNumberElement.innerHTML = populationCount;
+    peakPopulationElement.innerHTML = String(peekPopulationCount) + "(Gen: " + String(peekPopulationGeneration) + ")";
 }
 
 canvasElement = document.getElementById("lifeCanvas");
@@ -33,7 +37,7 @@ for (var y = 0; y < grid.length; y++) {
 seed = [[25, 25], [25, 23], [24, 24], [26, 24], [0, 0], [1, 0], [0, 1], [40, 7], [40, 6], [40, 5], [40, 3], [39, 7], [39, 6], [39, 5]];
 
 // plantSeed();
-plantRandomSeed(Math.floor((width*height)/10));
+plantRandomSeed(Math.floor((width * height) / 10));
 
 setInterval(generateAndDraw, 500);
 
@@ -43,16 +47,22 @@ function generateAndDraw() {
     drawGrid();
     updateNumberElements();
 }
-
+/**
+ * Sets predetermained cells to living
+ */
 function plantSeed() {
     seed.forEach(element => {
         grid[element[0]][element[1]] = 1;
     });
 }
-function plantRandomSeed(seedCount){
+/**
+ * Sets Random cells to living
+ * @param {*} seedCount Amount of cells to set to living
+ */
+function plantRandomSeed(seedCount) {
     console.log(seedCount, " seeds will be planted");
-    for(var i = 0; i < seedCount; i++){
-        grid[Math.floor(Math.random()*(height-1))][Math.floor(Math.random()*(width-1))] = 1;
+    for (var i = 0; i < seedCount; i++) {
+        grid[Math.floor(Math.random() * (height - 1))][Math.floor(Math.random() * (width - 1))] = 1;
     }
 }
 
@@ -128,7 +138,7 @@ function createNextGeneration() {
                 // If it has 2 or 3 neighbors it continues living (ages)
                 nextGeneration[y][x] = grid[y][x] + 1;
                 populationCount++;
-            } else if (grid[y][x] == 0 && neighbourCount == 3){
+            } else if (grid[y][x] == 0 && neighbourCount == 3) {
                 // for all dead cells,
                 // if it has exactly 3 neighbors it is repopulated (age 1)
                 nextGeneration[y][x] = 1;
@@ -138,6 +148,10 @@ function createNextGeneration() {
                 nextGeneration[y][x] = 0;
             }
         }
+    }
+    if (populationCount > peekPopulationCount) {
+        peekPopulationCount = populationCount;
+        peekPopulationGeneration = generationCount;
     }
     grid = nextGeneration;
 }
@@ -150,21 +164,21 @@ function drawGrid() {
     canvasContext.fillRect(0, 0, width, height);
 
     canvasContext.fillStyle = 'black';
-    for (var y = 0; y <= height-1; y++) {
-        for (var x = 0; x <= width-1; x++) {
+    for (var y = 0; y <= height - 1; y++) {
+        for (var x = 0; x <= width - 1; x++) {
             if (grid[y][x] == 1) {
                 canvasContext.fillStyle = 'black';
                 canvasContext.fillRect(x, y, cellWidth, cellHeight);
-            }else if(grid[y][x] > 1000) {
+            } else if (grid[y][x] > 1000) {
                 canvasContext.fillStyle = 'green';
                 canvasContext.fillRect(x, y, cellWidth, cellHeight);
-            }else if(grid[y][x] > 100) {
+            } else if (grid[y][x] > 100) {
                 canvasContext.fillStyle = 'red';
                 canvasContext.fillRect(x, y, cellWidth, cellHeight);
-            }else if(grid[y][x] > 1) {
+            } else if (grid[y][x] > 1) {
                 canvasContext.fillStyle = 'purple';
                 canvasContext.fillRect(x, y, cellWidth, cellHeight);
-            }else{
+            } else {
                 canvasContext.fillStyle = 'white';
                 canvasContext.fillRect(x, y, cellWidth, cellHeight);
             }
