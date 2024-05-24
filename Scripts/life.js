@@ -4,6 +4,7 @@
 
 var width = 500;
 var height = 500;
+var totalCells = width * height;
 var generationCount = 0;
 var populationCount = 0;
 var peekPopulationCount = 0;
@@ -37,7 +38,7 @@ for (var y = 0; y < grid.length; y++) {
 seed = [[25, 25], [25, 23], [24, 24], [26, 24], [0, 0], [1, 0], [0, 1], [40, 7], [40, 6], [40, 5], [40, 3], [39, 7], [39, 6], [39, 5]];
 
 // plantSeed();
-plantRandomSeed(Math.floor((width * height) / 10));
+plantRandomSeed(Math.floor((totalCells) / 5));
 
 setInterval(generateAndDraw, 500);
 
@@ -67,6 +68,13 @@ function plantRandomSeed(seedCount) {
 }
 
 function createNextGeneration() {
+    /**
+     * Rules:
+     * 1.   Any live cell with fewer than two live neighbors dies, as if by underpopulation.
+     * 2.   Any live cell with two or three live neighbors lives on to the next generation.
+     * 3.   Any live cell with more than three live neighbors dies, as if by overpopulation.
+     * 4.   Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
+     */
     populationCount = 0;
     var nextGeneration = Array(height);
     for (var i = 0; i < grid.length; i++) {
@@ -132,21 +140,35 @@ function createNextGeneration() {
                     neighbourCount++;
                 }
             }
-
-            if (grid[y][x] >= 1 && (neighbourCount == 3 || neighbourCount == 2)) {
-                // for all live cells,
-                // If it has 2 or 3 neighbors it continues living (ages)
-                nextGeneration[y][x] = grid[y][x] + 1;
-                populationCount++;
-            } else if (grid[y][x] == 0 && neighbourCount == 3) {
-                // for all dead cells,
-                // if it has exactly 3 neighbors it is repopulated (age 1)
-                nextGeneration[y][x] = 1;
-                populationCount++;
+            if (grid[y][x] >= 1) {
+                // for living cells
+                // rule 1.
+                if (neighbourCount < 2) {
+                    // dies from underpopulation
+                    nextGeneration[y][x] = 0;
+                }
+                // rule 2.
+                if (neighbourCount == 3 || neighbourCount == 2) {
+                    // cell continues to live and makes it to the next generation
+                    nextGeneration[y][x] = grid[y][x] + 1;
+                    populationCount++;
+                }
+                // rule 3.
+                if (neighbourCount > 3) {
+                    // cell dies as if from over population
+                    nextGeneration[y][x] = 0;
+                }
             } else {
-                // All other cells die (age 0)
-                nextGeneration[y][x] = 0;
+                // for dead cells
+                // rule 4.
+                if (neighbourCount == 3) {
+                    // cell is reborn though reproduction
+                    nextGeneration[y][x] = 1;
+                    populationCount++;
+                }
+
             }
+
         }
     }
     if (populationCount > peekPopulationCount) {

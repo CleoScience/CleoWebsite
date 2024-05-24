@@ -1,13 +1,14 @@
 body {
     display:flex;
 }
-canvas{
-    /* width: 700px;
-    height: 700px; */
+.lifeCanvas{
+     /* width: 500px;
+    height: 500px;  */
     border-radius: 2px;
     border-color: black;
     border-width: 2px;
     border-style: solid;
+    
 }
 .numberDiv{
     border-radius: 2px;
