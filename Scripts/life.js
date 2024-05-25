@@ -136,6 +136,12 @@ function boostSeedSquare(nextGeneration) {
                 // Turns the wall cells alive
                 nextGeneration[y][x] = 1;
             }
+            var quarterHeight = Math.floor(height / 4);
+            var quarterWidth = Math.floor(width / 4);
+            if (x == quarterWidth || y == quarterHeight ||
+                x == width - quarterWidth || y == height - quarterHeight) {
+                nextGeneration[y][x] = 1;
+            }
         }
     }
 }
