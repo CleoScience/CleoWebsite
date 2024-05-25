@@ -15,7 +15,7 @@ var peekPopulationGeneration = 0;
 var intervalLength = 100; // ms
 var populationRecord = [];
 var populationAverage = 0;
-var boostInterval = 100;
+var boostInterval = 250;
 
 var generationNumberElement = document.getElementById("generationNumber");
 var populationNumberElement = document.getElementById("populationNumber");
@@ -268,14 +268,14 @@ function drawGrid() {
             if (grid[y][x] == 1) {
                 canvasContext.fillStyle = 'black';
                 canvasContext.fillRect(x, y, cellWidth, cellHeight);
-            } else if (grid[y][x] > 1000) {
-                canvasContext.fillStyle = 'green';
+            } else if (grid[y][x] > 560) {
+                canvasContext.fillStyle = 'rgba(' + String(grid[y][x] % 255) + ', 255, 255, 1)';
                 canvasContext.fillRect(x, y, cellWidth, cellHeight);
-            } else if (grid[y][x] > 100) {
-                canvasContext.fillStyle = 'red';
+            } else if (grid[y][x] > 255) {
+                canvasContext.fillStyle = 'rgba(0, ' + String(grid[y][x] % 255) + ', 255, 1)';
                 canvasContext.fillRect(x, y, cellWidth, cellHeight);
             } else if (grid[y][x] > 1) {
-                canvasContext.fillStyle = 'purple';
+                canvasContext.fillStyle = 'rgba(0, 0, ' + String(grid[y][x] % 255) + ', 1)';
                 canvasContext.fillRect(x, y, cellWidth, cellHeight);
             } else {
                 canvasContext.fillStyle = 'white';
