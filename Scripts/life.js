@@ -128,6 +128,17 @@ function checkBottomCenter(x, y) {
 function checkBottomRight(x, y) {
     return grid[lookDown(y)][lookRight(x)] >= 1;
 }
+function boostSeedSquare(nextGeneration) {
+
+    for (var y = 0; y < grid.length; y++) {
+        for (var x = 0; x < grid[y].length; x++) {
+            if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
+                // Turns the wall cells alive
+                nextGeneration[y][x] = 1;
+            }
+        }
+    }
+}
 function createNextGeneration() {
     /**
      * Rules:
@@ -216,6 +227,12 @@ function createNextGeneration() {
     populationRecord.push(populationCount);
     var sum = populationRecord.reduce((a, b) => a + b, 0);
     populationAverage = sum / populationRecord.length;
+
+    // 500 mod boost
+    if (generationCount % 500 == 0) {
+        boostSeedSquare(nextGeneration);
+    }
+
     grid = nextGeneration;
 }
 
