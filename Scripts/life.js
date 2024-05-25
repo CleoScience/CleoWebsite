@@ -15,6 +15,7 @@ var peekPopulationGeneration = 0;
 var intervalLength = 100; // ms
 var populationRecord = [];
 var populationAverage = 0;
+var boostInterval = 100;
 
 var generationNumberElement = document.getElementById("generationNumber");
 var populationNumberElement = document.getElementById("populationNumber");
@@ -129,18 +130,30 @@ function checkBottomRight(x, y) {
     return grid[lookDown(y)][lookRight(x)] >= 1;
 }
 function boostSeedSquare(nextGeneration) {
-
+    var randomOptions = 3;
+    var randomBoost = Math.floor(Math.random() * randomOptions);
     for (var y = 0; y < grid.length; y++) {
         for (var x = 0; x < grid[y].length; x++) {
-            if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
-                // Turns the wall cells alive
-                nextGeneration[y][x] = 1;
+            if (randomBoost == 0) {
+                if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
+                    // Turns the wall cells alive
+                    nextGeneration[y][x] = 1;
+                }
             }
-            var quarterHeight = Math.floor(height / 4);
-            var quarterWidth = Math.floor(width / 4);
-            if (x == quarterWidth || y == quarterHeight ||
-                x == width - quarterWidth || y == height - quarterHeight) {
-                nextGeneration[y][x] = 1;
+            if (randomBoost == 1) {
+                var quarterHeight = Math.floor(height / 4);
+                var quarterWidth = Math.floor(width / 4);
+                if (x == quarterWidth || y == quarterHeight ||
+                    x == width - quarterWidth || y == height - quarterHeight) {
+                    // Turns inner grid alive
+                    nextGeneration[y][x] = 1;
+                }
+            }
+            if (randomBoost == 2) {
+                if (x == y) {
+                    // Turns diagonal line alive
+                    nextGeneration[y][x] = 1;
+                }
             }
         }
     }
@@ -235,7 +248,7 @@ function createNextGeneration() {
     populationAverage = sum / populationRecord.length;
 
     // 500 mod boost
-    if (generationCount % 500 == 0) {
+    if (generationCount % boostInterval == 0) {
         boostSeedSquare(nextGeneration);
     }
 
