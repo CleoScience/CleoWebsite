@@ -263,24 +263,22 @@ function drawGrid() {
     canvasContext.fillRect(0, 0, width, height);
 
     canvasContext.fillStyle = 'black';
+    var fillStyleText = "";
     for (var y = 0; y <= height - 1; y++) {
         for (var x = 0; x <= width - 1; x++) {
             if (grid[y][x] == 1) {
-                canvasContext.fillStyle = 'black';
-                canvasContext.fillRect(x, y, cellWidth, cellHeight);
+                fillStyleText = 'black';
             } else if (grid[y][x] > 560) {
-                canvasContext.fillStyle = 'rgba(' + String(grid[y][x] % 255) + ', 255, 255, 1)';
-                canvasContext.fillRect(x, y, cellWidth, cellHeight);
+                fillStyleText = 'rgba(' + String(grid[y][x] % 255) + ', 255, 255, 1)';
             } else if (grid[y][x] > 255) {
-                canvasContext.fillStyle = 'rgba(0, ' + String(grid[y][x] % 255) + ', 255, 1)';
-                canvasContext.fillRect(x, y, cellWidth, cellHeight);
+                fillStyleText = 'rgba(0, ' + String(grid[y][x] % 255) + ', 255, 1)';
             } else if (grid[y][x] > 1) {
-                canvasContext.fillStyle = 'rgba(0, 0, ' + String(grid[y][x] % 255) + ', 1)';
-                canvasContext.fillRect(x, y, cellWidth, cellHeight);
+                fillStyleText = 'rgba(0, 0, ' + String(grid[y][x] % 255) + ', 1)';
             } else {
-                canvasContext.fillStyle = 'white';
-                canvasContext.fillRect(x, y, cellWidth, cellHeight);
+                fillStyleText = 'white';
             }
+            canvasContext.fillStyle = fillStyleText;
+            canvasContext.fillRect(x, y, cellWidth, cellHeight);
         }
     }
 
