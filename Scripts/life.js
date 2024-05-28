@@ -264,16 +264,18 @@ function drawGrid() {
 
     canvasContext.fillStyle = 'black';
     var fillStyleText = "";
+    var pixelMax = 255;
     for (var y = 0; y <= height - 1; y++) {
         for (var x = 0; x <= width - 1; x++) {
             if (grid[y][x] == 1) {
                 fillStyleText = 'black';
-            } else if (grid[y][x] > 560) {
-                fillStyleText = 'rgba(' + String(255 - (grid[y][x] % 255)) + ', 255, 0, 1)';
-            } else if (grid[y][x] > 255) {
-                fillStyleText = 'rgba(255, ' + String(255 - (grid[y][x] % 255)) + ', 0, 1)';
+            } else if (grid[y][x] > pixelMax * 2) {
+                fillStyleText = 'rgba(' + String(pixelMax - (grid[y][x] * 20 % pixelMax)) + ', ' + String((grid[y][x] * 10 % pixelMax)) + ', ' + String((grid[y][x] * 3 % pixelMax)) + ', 1)';
+                // fillStyleText = 'rgba(' + String(255 - (grid[y][x] % 255)) + ', 255, 0, 1)';
+            } else if (grid[y][x] > pixelMax) {
+                fillStyleText = 'rgba(' + String(((grid[y][x] * 2) % pixelMax)) + ', ' + String(pixelMax - (grid[y][x] % pixelMax)) + ', ' + String(pixelMax - (grid[y][x] % pixelMax)) + ', 1)';
             } else if (grid[y][x] > 1) {
-                fillStyleText = 'rgba(255, 0, ' + String(255 - (grid[y][x] % 255)) + ', 1)';
+                fillStyleText = 'rgba(' + String((grid[y][x] * 5 % pixelMax)) + ', ' + String(pixelMax - (grid[y][x] * 3 % pixelMax)) + ', ' + String(pixelMax - (grid[y][x] * 10 % pixelMax)) + ', 1)';
             } else {
                 fillStyleText = 'white';
             }
