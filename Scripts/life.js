@@ -269,11 +269,11 @@ function drawGrid() {
             if (grid[y][x] == 1) {
                 fillStyleText = 'black';
             } else if (grid[y][x] > 560) {
-                fillStyleText = 'rgba(' + String(grid[y][x] % 255) + ', 255, 255, 1)';
+                fillStyleText = 'rgba(' + String(255 - (grid[y][x] % 255)) + ', 255, 0, 1)';
             } else if (grid[y][x] > 255) {
-                fillStyleText = 'rgba(0, ' + String(grid[y][x] % 255) + ', 255, 1)';
+                fillStyleText = 'rgba(255, ' + String(255 - (grid[y][x] % 255)) + ', 0, 1)';
             } else if (grid[y][x] > 1) {
-                fillStyleText = 'rgba(0, 0, ' + String(grid[y][x] % 255) + ', 1)';
+                fillStyleText = 'rgba(255, 0, ' + String(255 - (grid[y][x] % 255)) + ', 1)';
             } else {
                 fillStyleText = 'white';
             }
