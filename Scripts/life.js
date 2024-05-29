@@ -15,6 +15,8 @@ var peekPopulationGeneration = 0;
 var intervalLength = 100; // ms
 var populationRecord = [];
 var populationAverage = 0;
+var oldestCell = 0;
+var oldestCellXY = "";
 var boostInterval = 500;
 var boostEventList = [];
 
@@ -22,6 +24,7 @@ var generationNumberElement = document.getElementById("generationNumber");
 var boostEventListElement = document.getElementById("boostEventList");
 var populationNumberElement = document.getElementById("populationNumber");
 var peakPopulationElement = document.getElementById("PeakPopulation");
+var oldestCellElement = document.getElementById("oldestCell");
 var averagePopulationElement = document.getElementById("AveragePopulation");
 
 function updateNumberElements() {
@@ -29,6 +32,7 @@ function updateNumberElements() {
     populationNumberElement.innerHTML = populationCount;
     peakPopulationElement.innerHTML = String(peekPopulationCount) + "(Gen: " + String(peekPopulationGeneration) + ")";
     averagePopulationElement.innerHTML = String(populationAverage);
+    oldestCellElement.innerHTML = String(oldestCell) + " - " + oldestCellXY;
     boostEventListElement.innerHTML = boostEventList;
 }
 
@@ -274,8 +278,14 @@ function drawGrid() {
     canvasContext.fillStyle = 'black';
     var fillStyleText = "";
     var pixelMax = 255;
+    oldestCell = 0;
+    oldestCellXY = "";
     for (var y = 0; y <= height - 1; y++) {
         for (var x = 0; x <= width - 1; x++) {
+            if (grid[y][x] > oldestCell) {
+                oldestCell = grid[y][x];
+                oldestCellXY = "(" + String(x) + ", " + String(y) + ")";
+            }
             if (grid[y][x] == 1) {
                 fillStyleText = 'black';
             } else if (grid[y][x] > pixelMax * 2) {
