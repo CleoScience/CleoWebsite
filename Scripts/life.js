@@ -15,9 +15,11 @@ var peekPopulationGeneration = 0;
 var intervalLength = 100; // ms
 var populationRecord = [];
 var populationAverage = 0;
-var boostInterval = 250;
+var boostInterval = 500;
+var boostEventList = [];
 
 var generationNumberElement = document.getElementById("generationNumber");
+var boostEventListElement = document.getElementById("boostEventList");
 var populationNumberElement = document.getElementById("populationNumber");
 var peakPopulationElement = document.getElementById("PeakPopulation");
 var averagePopulationElement = document.getElementById("AveragePopulation");
@@ -27,6 +29,7 @@ function updateNumberElements() {
     populationNumberElement.innerHTML = populationCount;
     peakPopulationElement.innerHTML = String(peekPopulationCount) + "(Gen: " + String(peekPopulationGeneration) + ")";
     averagePopulationElement.innerHTML = String(populationAverage);
+    boostEventListElement.innerHTML = boostEventList;
 }
 
 
@@ -132,6 +135,7 @@ function checkBottomRight(x, y) {
 function boostSeedSquare(nextGeneration) {
     var randomOptions = 3;
     var randomBoost = Math.floor(Math.random() * randomOptions);
+    var boostName = "";
     for (var y = 0; y < grid.length; y++) {
         for (var x = 0; x < grid[y].length; x++) {
             if (randomBoost == 0) {
@@ -139,6 +143,7 @@ function boostSeedSquare(nextGeneration) {
                     // Turns the wall cells alive
                     nextGeneration[y][x] = 1;
                 }
+                boostName = "Border";
             }
             if (randomBoost == 1) {
                 var quarterHeight = Math.floor(height / 4);
@@ -148,15 +153,19 @@ function boostSeedSquare(nextGeneration) {
                     // Turns inner grid alive
                     nextGeneration[y][x] = 1;
                 }
+                boostName = "Grid";
             }
             if (randomBoost == 2) {
                 if (x == y) {
                     // Turns diagonal line alive
                     nextGeneration[y][x] = 1;
                 }
+                boostName = "Diagonal";
             }
         }
     }
+    boostEventList.push(String(generationCount) + " - " + boostName + "<br/>");
+    // boostEventList += (String(generationCount) + " - " + boostName + "<br>");
 }
 function createNextGeneration() {
     /**
