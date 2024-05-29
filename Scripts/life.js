@@ -300,7 +300,7 @@ function drawGrid() {
                 fillStyleText = 'rgba(' + String(pixelMax - (grid[y][x] * 30 % pixelMax)) + ', ' + String((grid[y][x] * 10 % pixelMax)) + ', ' + String(pixelMax - (grid[y][x] * 30 % pixelMax)) + ', 1)';
                 // fillStyleText = 'rgba(' + String(255 - (grid[y][x] % 255)) + ', 255, 0, 1)';
             } else if (grid[y][x] > pixelMax) {
-                fillStyleText = 'rgba(' + String(((grid[y][x] * 20) % pixelMax)) + ', ' + String(pixelMax - (grid[y][x] * 10 % pixelMax)) + ', ' + String(pixelMax - (grid[y][x] * 20 % pixelMax)) + ', 1)';
+                fillStyleText = 'rgba(' + String(((grid[y][x] * 20) % pixelMax)) + ', ' + String(pixelMax - (grid[y][x] * 10 % pixelMax)) + ', ' + String(pixelMax - (grid[y][x] * 50 % pixelMax)) + ', 1)';
             } else if (grid[y][x] > 1) {
                 fillStyleText = 'rgba(' + String((grid[y][x] * 10 % pixelMax)) + ', ' + String(pixelMax - (grid[y][x] * 10 % pixelMax)) + ', ' + String(pixelMax - (grid[y][x] % pixelMax)) + ', 1)';
             } else {
