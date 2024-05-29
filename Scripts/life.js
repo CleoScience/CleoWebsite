@@ -137,9 +137,11 @@ function checkBottomRight(x, y) {
     return grid[lookDown(y)][lookRight(x)] >= 1;
 }
 function boostSeedSquare(nextGeneration) {
-    var randomOptions = 3;
+    var randomOptions = 4;
     var randomBoost = Math.floor(Math.random() * randomOptions);
     var boostName = "";
+    var quarterHeight = Math.floor(height / 4);
+    var quarterWidth = Math.floor(width / 4);
     for (var y = 0; y < grid.length; y++) {
         for (var x = 0; x < grid[y].length; x++) {
             if (randomBoost == 0) {
@@ -150,8 +152,6 @@ function boostSeedSquare(nextGeneration) {
                 boostName = "Border";
             }
             if (randomBoost == 1) {
-                var quarterHeight = Math.floor(height / 4);
-                var quarterWidth = Math.floor(width / 4);
                 if (x == quarterWidth || y == quarterHeight ||
                     x == width - quarterWidth || y == height - quarterHeight) {
                     // Turns inner grid alive
@@ -160,11 +160,19 @@ function boostSeedSquare(nextGeneration) {
                 boostName = "Grid";
             }
             if (randomBoost == 2) {
-                if (x == y) {
+                if (x == y || x == y - quarterHeight || x == y + quarterHeight) {
                     // Turns diagonal line alive
                     nextGeneration[y][x] = 1;
                 }
-                boostName = "Diagonal";
+                boostName = "Diagonal \\";
+            }
+            if (randomBoost == 3) {
+                var inversX = width - x;
+                if ( inversX == y || inversX == y - quarterHeight || inversX == y + quarterHeight) {
+                    // Turns diagonal line alive
+                    nextGeneration[y][x] = 1;
+                }
+                boostName = "Diagonal /";
             }
         }
     }
