@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Pixelator</title>
+
+  <html>
+    <head>
+      <link rel="icon" href="Media/icon.png" />
+      <link rel="stylesheet" href="Styles/index.css" />
+    </head>
+
+    <body id="body">
+      <h3 class="boardedDiv"><a href="Life.html">Life link</a></h3>
+      <h3 class="boardedDiv"><a href="index.html">Mandelbrot link</a></h3>
+      <h1 class="borderedDiv">Pixelator</h1>
+      <h2>Description</h2>
+      <p class="borderedDiv">This page is intended to ...</p>
+      <h2>Instructions</h2>
+      <p class="borderedDiv">
+        1. ... <br />
+        2. ... <br />
+      </p>
+      <p id="stats"></p>
+
+      <h2>Options:</h2>
+      <menu class="borderedDiv">
+        <li><input type="file" id="fileInput" accept="image/*" /></li>
+        <li>
+          <button class="drawButton" type="button" id="getAverageButton">
+            Get Average Color
+          </button>
+        </li>
+
+        <li>
+          <input type="checkbox" id="setThreeColors" name="setThreeColors" />
+          <label for="setThreeColors">Set 3 Colors</label>
+          <div class="colorPicker" id="colorPicker">
+            <input type="color" id="customColorOne" value="#ff0000" />
+            <input type="color" id="customColorTwo" value="#ffffff" />
+            <input type="color" id="customColorThree" value="#0000ff" />
+          </div>
+        </li>
+        <li>
+          <input type="checkbox" id="setSpectrum" name="setSpectrum" />
+          <label for="setSpectrum">Set 2 Colors</label>
+          <div class="colorPicker" id="spectrumColorPicker">
+            <input type="color" id="spectrumColorOne" value="#ff0000" />
+            <input type="color" id="spectrumColorTwo" value="#0000ff" />
+          </div>
+        </li>
+      </menu>
+      <h2>Controls</h2>
+      <div class="borderedDiv">
+        <button class="drawButton" type="button" id="resetButton">Reset</button>
+        <br />
+        <button class="drawButton" type="button" id="pixelateButton">
+          Draw
+        </button>
+      </div>
+      <canvas
+        id="imageDisplay"
+        src=""
+        alt="Selected Image"
+        style="max-width: 100%; height: auto; display: none"
+        title="inputImage"
+        >Selected Image</canvas
+      >
+      <canvas
+        style="
+          position: relative;
+          margin: 10px;
+          width: 40px;
+          height: 40px;
+          border-width: 1px;
+          border-color: black;
+          border-style: double;
+          border-radius: 10px;
+        "
+        ,
+        id="averageColorCanvas"
+        ,
+      >
+      </canvas
+      ><canvas
+        style="
+          position: relative;
+          margin: 10px;
+          width: 400px;
+          height: 400px;
+          border-width: 1px;
+          border-color: black;
+          border-style: double;
+          border-radius: 10px;
+        "
+        ,
+        id="outputCanvas"
+        ,
+      >
+      </canvas>
+      <script src="Scripts/Pixelator.js"></script>
+    </body>
+  </html>
+</html>
