@@ -14,7 +14,82 @@ function pixelatePicture() {
  *  Finds and returns average color.
  *
  *
- * @returns {tuple} - Tuple holding Reg Green Blue of average color
+ * @returns {Array} - [r,g,b] holding Reg Green Blue of average color
+ */
+function setAverageColors() {
+  var averageColors = getAverageColor();
+  var compAverageColors = getCompColor(averageColors);
+  setColorToCanvas("colorCompCanvas", compAverageColors);
+  var midColor = getMidPoint(compAverageColors, averageColors);
+  var compMidColor = getCompColor(midColor);
+  setColorToCanvas("compMidCanvas", compMidColor);
+}
+
+/**
+ *  Finds midpoint of two colors
+ *
+ * @param {Array} point1
+ * @param {Array} point2
+ *
+ * @returns {Array} - [r,g,b] holding Reg Green Blue of average color
+ */
+function getMidPoint(point1, point2) {
+  return [
+    Math.floor((point1[0] + point2[0]) / 2),
+    Math.floor((point1[1] + point2[1]) / 2),
+    Math.floor((point1[2] + point2[2]) / 2),
+  ];
+}
+
+/**
+ *  Finds and returns average color.
+ *
+ * @param {Array} colors - int representation of colors r g b
+ *
+ * @returns {string} #RRGGBB hex representation of colors
+ */
+function convertIntColorToHex(colors) {
+  var returnColorHex =
+    "#" +
+    colors[0].toString(16).padStart(2, "0").toUpperCase() +
+    colors[1].toString(16).padStart(2, "0").toUpperCase() +
+    colors[2].toString(16).padStart(2, "0").toUpperCase();
+  return returnColorHex;
+}
+
+/**
+ *  Finds and returns average color.
+ *
+ * @param {string} elementId - Id of Canvas to set color to.
+ * @param {Array} color - [r,g,b] colors to find the comp to.
+ *
+ */
+function setColorToCanvas(elementId, color) {
+  const canvas = document.getElementById(elementId);
+  const ctx = canvas.getContext("2d");
+  var returnColorHex = convertIntColorToHex(color);
+  ctx.fillStyle = returnColorHex;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+/**
+ *  Finds and returns average color.
+ *
+ * @param {Array} originalColors - [r,g,b] colors to find the comp to.
+ *
+ * @returns {Array} - [r,g,b] holding Reg Green Blue of average color
+ */
+function getCompColor(originalColors) {
+  var rComp = Math.abs(originalColors[0] - 255);
+  var gComp = Math.abs(originalColors[1] - 255);
+  var bComp = Math.abs(originalColors[2] - 255);
+  return [rComp, gComp, bComp];
+}
+/**
+ *  Finds and returns average color.
+ *
+ *
+ * @returns {Array} - Tuple holding Reg Green Blue of average color
  */
 function getAverageColor() {
   // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
@@ -44,33 +119,18 @@ function getAverageColor() {
   console.log(rAverage);
   console.log(gAverage);
   console.log(bAverage);
-  const returnTuple = [rAverage, gAverage, bAverage];
+  const returnArray = [rAverage, gAverage, bAverage];
   console.log(
     "Average Color: " +
-      returnTuple[0] +
+      returnArray[0] +
       ", " +
-      returnTuple[1] +
+      returnArray[1] +
       ", " +
-      returnTuple[2]
+      returnArray[2]
   );
-  var returnColorHex =
-    "#" +
-    rAverage.toString(16).padStart(2, "0").toUpperCase() +
-    gAverage.toString(16).padStart(2, "0").toUpperCase() +
-    bAverage.toString(16).padStart(2, "0").toUpperCase();
-  console.log(returnColorHex);
-  const averageColorCanvas = document.getElementById("averageColorCanvas");
-  const averageColorCtx = averageColorCanvas.getContext("2d");
+  setColorToCanvas("averageColorCanvas", [rAverage, gAverage, bAverage]);
 
-  averageColorCtx.fillStyle = returnColorHex;
-  averageColorCtx.fillRect(
-    0,
-    0,
-    averageColorCanvas.width,
-    averageColorCanvas.height
-  );
-
-  return returnTuple;
+  return returnArray;
 }
 
 // variables
@@ -82,7 +142,7 @@ buttonElement = document.getElementById("pixelateButton");
 buttonElement.onclick = pixelatePicture;
 
 buttonGetAverageElement = document.getElementById("getAverageButton");
-buttonGetAverageElement.onclick = getAverageColor;
+buttonGetAverageElement.onclick = setAverageColors;
 
 // Add Listener to Choose File Button
 document
